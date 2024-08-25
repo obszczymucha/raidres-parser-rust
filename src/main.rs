@@ -1,68 +1,11 @@
+mod model;
+
 use anyhow::{Context, Result};
 use base64::{engine::general_purpose, Engine};
+use model::{Item, Metadata, Output, RaidResponse, RaidresResponse, SoftReserve};
 use reqwest::Client;
-use serde::{Deserialize, Serialize};
 
 const RAIDRES_URL: &str = "https://raidres.fly.dev/";
-
-#[derive(Deserialize, Debug)]
-struct RaidresResponse {
-    #[serde(rename = "raidId")]
-    raid_id: i32,
-    reservations: Vec<ReservationData>,
-}
-
-#[derive(Deserialize, Debug)]
-struct ReservationData {
-    #[serde(rename = "raidItemId")]
-    raid_item_id: i32,
-    character: Character,
-}
-
-#[derive(Deserialize, Debug)]
-struct Character {
-    name: String,
-}
-
-#[derive(Deserialize, Debug)]
-struct RaidResponse {
-    name: String,
-    #[serde(rename = "raidItems")]
-    raid_items: Vec<RaidItem>,
-}
-
-#[derive(Deserialize, Debug)]
-struct RaidItem {
-    id: i32,
-    #[serde(rename = "turtleDbItemId")]
-    turtle_db_item_id: i32,
-    quality: i32,
-}
-
-#[derive(Serialize)]
-struct Output {
-    metadata: Metadata,
-    softreserves: Vec<SoftReserve>,
-}
-
-#[derive(Serialize)]
-struct Metadata {
-    id: String,
-    instance: i32,
-    instances: Vec<String>,
-}
-
-#[derive(Serialize)]
-struct SoftReserve {
-    name: String,
-    items: Vec<Item>,
-}
-
-#[derive(Serialize)]
-struct Item {
-    id: i32,
-    quality: i32,
-}
 
 async fn fetch_raidres_data(id: &str, client: &Client) -> Result<RaidresResponse> {
     let url = format!("{}/api/events/{}", RAIDRES_URL, id);
