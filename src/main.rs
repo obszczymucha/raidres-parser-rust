@@ -2,7 +2,7 @@ mod model;
 
 use anyhow::{Context, Result};
 use base64::{engine::general_purpose, Engine};
-use model::{Item, Metadata, Output, RaidResponse, RaidresResponse, ReservationData, SoftReserve};
+use model::{Item, Metadata, Output, RaidResponse, RaidresResponse, SoftReserve};
 use reqwest::Client;
 
 const RAIDRES_URL: &str = "https://raidres.fly.dev/";
@@ -45,17 +45,22 @@ async fn main() -> Result<()> {
     let raid_response = fetch_raid_data(raidres_response.raid_id, &client).await?;
     let mut soft_reserves = Vec::new();
 
-    let reservations_with_items = raidres_response
-        .reservations
-        .into_iter()
-        .filter(|r| r.raid_item_id.is_some())
-        .collect::<Vec<ReservationData>>();
+    for reservation in raidres_response.reservations {
+        let item_id = reservation.raid_item_id;
 
-    for reservation in reservations_with_items {
+        if item_id.is_none() {
+            soft_reserves.push(SoftReserve {
+                name: reservation.character.name,
+                items: vec![Item { id: 0, quality: 0 }],
+            });
+
+            continue;
+        }
+
         if let Some(raid_item) = raid_response
             .raid_items
             .iter()
-            .find(|item| item.id == reservation.raid_item_id.unwrap())
+            .find(|item| item.id == item_id.unwrap())
         {
             soft_reserves.push(SoftReserve {
                 name: reservation.character.name,
