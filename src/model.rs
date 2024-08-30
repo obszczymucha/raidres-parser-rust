@@ -10,7 +10,7 @@ pub(crate) struct RaidresResponse {
 #[derive(Deserialize, Debug)]
 pub(crate) struct ReservationData {
     #[serde(rename = "raidItemId")]
-    pub(crate) raid_item_id: i32,
+    pub(crate) raid_item_id: Option<i32>,
     pub(crate) character: Character,
 }
 
