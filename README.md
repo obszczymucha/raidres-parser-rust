@@ -1,5 +1,5 @@
 # Raidres Parser
-A parser for https://raidres.fly.dev data for integration with https://github.com/obszczymucha/RollFor.
+A parser for https://raidres.fly.dev data for integration with https://github.com/obszczymucha/roll-for-vanilla.
 
 ## How to use
 1. Set up the raid and grab the id from the url. Then run:
