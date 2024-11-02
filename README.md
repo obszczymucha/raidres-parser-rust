@@ -2,10 +2,7 @@
 A parser for [raidres](https://raidres.fly.dev) softres data for integration with [RollFor](https://github.com/obszczymucha/roll-for-vanilla) WoW addon.
 
 ## NOTE
-This is a temporary solution until [raidres](https://raidres.fly.dev) implements proper data export.  
-I already talked to **itamedruids** who is the author of the website and he promised he'll do it.  
-Ask him kindly to do it if you like his work and this addon. Find him on Discord, details at raidres website.  
-In the meantime, continue reading.
+This project is not needed anymore. [raidres](https://raidres.fly.dev) added support for **RollFor**.
 
 ## How to use
 1. Install **Rust** using [rustup](https://rustup.rs). It will install **cargo** to build this project.  
